@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Kullanıcı Paneli</title>
+</head>
+<body>
+  <h1>Kullanıcı Paneli</h1>
+  <p>Hoş geldiniz, {{ session['username'] }} (Rol: {{ session['role'] }})</p>
+  <a href="{{ url_for('logout') }}">Çıkış Yap</a>
+
+  <h2>Kullanıcı Ekle / Güncelle</h2>
+  <form method="post">
+    <input type="hidden" name="user_id" id="user_id" value="">
+    İsim: <input type="text" name="name" id="name" required><br>
+    Email: <input type="email" name="email" id="email" required><br><br>
+
+    <!-- Ekleme butonu: admin + adder -->
+    <button type="submit"
+      {% if session['role'] not in ['admin','adder','editor'] %}disabled{% endif %}>
+      Kaydet (Yeni veya Güncelle)
+    </button>
+    <button type="button" onclick="clearForm()">Temizle</button>
+  </form>
+
+  <p style="color:green">{{ message }}</p>
+
+  <h2>Eklenen Kullanıcılar</h2>
+  <table border="1" cellpadding="5" cellspacing="0">
+    <tr>
+      <th>ID</th><th>İsim</th><th>Email</th>
+      {% if session['role'] in ['admin','editor'] %}<th>Düzenle</th>{% endif %}
+      {% if session['role'] in ['admin','deleter'] %}<th>Sil</th>{% endif %}
+    </tr>
+    {% for user in users %}
+    <tr>
+      <td>{{ user[0] }}</td>
+      <td>{{ user[1] }}</td>
+      <td>{{ user[2] }}</td>
+
+      {% if session['role'] in ['admin','editor'] %}
+      <td>
+        <button onclick="editUser('{{ user[0] }}','{{ user[1] }}','{{ user[2] }}')">Düzenle</button>
+      </td>
+      {% endif %}
+
+      {% if session['role'] in ['admin','deleter'] %}
+      <td>
+        <form action="{{ url_for('delete_user', user_id=user[0]) }}" method="post" style="display:inline;">
+          <button type="submit" onclick="return confirm('Silmek istediğinize emin misiniz?')">Sil</button>
+        </form>
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </table>
+
+  <br>
+  {% if session['role'] in ['admin','adder'] %}
+  <form action="{{ url_for('add_random_user') }}" method="get">
+    <button type="submit">Rastgele Kullanıcı Ekle</button>
+  </form>
+  {% endif %}
+
+  <script>
+    function editUser(id, name, email) {
+      document.getElementById('user_id').value = id;
+      document.getElementById('name').value = name;
+      document.getElementById('email').value = email;
+    }
+    function clearForm() {
+      document.getElementById('user_id').value = '';
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+    }
+  </script>
+</body>
+</html>
+

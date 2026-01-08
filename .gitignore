@@ -1,0 +1,27 @@
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+venv/
+.venv/
+
+# Logs
+*.log
+logs/
+project_app_logs/
+
+# Database / local data
+pgdata.tar.gz
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Postgres runtime data (do not commit)
+postgres/data/

@@ -1,0 +1,30 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: proje_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: sifre123
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    container_name: proje_web
+    command: python app.py
+    volumes:
+      - ./app:/src              # kodlarını mount ediyor
+      - ~/project_app_logs:/logs   # log klasörünü mount ediyor
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:
+
