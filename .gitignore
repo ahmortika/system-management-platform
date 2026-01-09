@@ -25,3 +25,4 @@ Thumbs.db
 
 # Postgres runtime data (do not commit)
 postgres/data/
+project-2-local/venv/

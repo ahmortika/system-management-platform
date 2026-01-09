@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Kullanıcı Düzenle</title>
+  </head>
+  <body>
+    <h2>Kullanıcı Düzenle</h2>
+    <form method="post">
+      <input type="text" name="name" value="{{ user.name }}" required>
+      <input type="email" name="email" value="{{ user.email }}" required>
+      <button type="submit">Güncelle</button>
+    </form>
+    <a href="{{ url_for('index') }}">Geri</a>
+  </body>
+</html>
+
